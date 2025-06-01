@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+
+<head>
+    <title layout:fragment="title">Edit</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form th:action="@{'/admin/category/edit/' + ${category.id}}" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" th:value="${category.name}" placeholder="Category Name"/>
+
+        <img th:src="@{${category.image.path}}" alt="Category Image"
+             style="width:200px; height:200px; object-fit:cover;"/>
+
+        <input type="file" name="imageFile"/>
+
+        <button type="submit">Update</button>
+    </form>
+</div>
+</body>
+</html>

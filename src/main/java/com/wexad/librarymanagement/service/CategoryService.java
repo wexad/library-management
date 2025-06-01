@@ -48,4 +48,48 @@ public class CategoryService {
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+
+    public List<Category> findAllDeleted() {
+        return categoryRepository.findAllDeleted();
+    }
+
+    public void updateCategory(Long id, Category updatedCategory, MultipartFile imageFile) {
+        Category existingCategory = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        existingCategory.setName(updatedCategory.getName());
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String uploadDir = "/home/wexad/upload-dir/images/category";
+                Files.createDirectories(Paths.get(uploadDir));
+                String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+                Path filePath = Paths.get(uploadDir).resolve(filename);
+                imageFile.transferTo(filePath.toFile());
+
+                Image newImage = Image.builder()
+                        .path("/images/category/" + filename)
+                        .build();
+                imageRepository.save(newImage);
+
+                existingCategory.setImage(newImage);
+            } catch (IOException e) {
+                throw new RuntimeException("Error in saving image: " + e.getMessage());
+            }
+        }
+
+        categoryRepository.save(existingCategory);
+    }
+
+    public Category findById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+    }
+
+    public void delete(Long id) {
+        categoryRepository.softDeleteById(id);
+    }
+
+    public void restore(Long id) {
+        categoryRepository.restoreById(id);
+    }
 }

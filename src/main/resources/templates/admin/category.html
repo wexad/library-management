@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/layout}">
 
+
 <head>
     <title layout:fragment="title">Category</title>
 </head>
@@ -10,14 +11,38 @@
 <body>
 <div layout:fragment="content">
     <h1>Category List</h1>
-    <ul>
-        <li th:each="category : ${categories}">
-            <span th:text="${category.name}"></span>
-            <img th:src="@{${category.image.path}}" alt="Category Image"
-                 style="width: 200px; height: 200px; object-fit: cover;"/>
+
+    <h2>Active Categories</h2>
+    <ul class="category-list">
+        <li th:if="${#lists.isEmpty(categoriesActive)}">No active categories found.</li>
+        <li th:each="category : ${categoriesActive}" class="category-item">
+            <span th:text="${category.name}" class="category-name"></span>
+            <img th:src="@{${category.image.path}}" alt="Category Image" class="category-image"/>
+            <a th:href="@{'/admin/category/edit/' + ${category.id}}" class="btn edit-btn">Edit</a>
+            <form th:action="@{'/admin/category/' + ${category.id} + '/delete'}"
+                  method="post" style="display:inline;"
+                  onsubmit="return confirmDelete();">
+                <button type="submit" class="btn delete-btn">Delete</button>
+            </form>
         </li>
     </ul>
-    <a th:href="@{/admin/category/create}">Create Category</a>
+
+    <h2>Inactive Categories</h2>
+    <ul class="category-list">
+        <li th:if="${#lists.isEmpty(categoriesInactive)}">No inactive categories found.</li>
+        <li th:each="category : ${categoriesInactive}" class="category-item">
+            <span th:text="${category.name}" class="category-name"></span>
+            <img th:src="@{${category.image.path}}" alt="Category Image" class="category-image"/>
+            <a th:href="@{'/admin/category/edit/' + ${category.id}}" class="btn edit-btn">Edit</a>
+            <form th:action="@{'/admin/category/' + ${category.id} + '/restore'}"
+                  method="post" style="display:inline;"
+                  onsubmit="return confirmRestore();">
+                <button type="submit" class="btn restore-btn">Restore</button>
+            </form>
+        </li>
+    </ul>
+
+    <a th:href="@{/admin/category/create}" class="btn create-btn">Create Category</a>
 </div>
 </body>
 </html>

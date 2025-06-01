@@ -2,6 +2,7 @@ package com.wexad.librarymanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 
 @Getter
 @Setter
