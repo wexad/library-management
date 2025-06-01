@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title layout:fragment="title">Admin Panel</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+<!--<header>-->
+<!--    <h1>Admin Panel</h1>-->
+<!--</header>-->
+
+<aside>
+    <ul>
+        <li><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+        <li><a th:href="@{/admin/users}">Users</a></li>
+        <li><a th:href="@{/admin/books}">Books</a></li>
+        <li><a th:href="@{/admin/category}">Book Category</a></li>
+        <li><a th:href="@{/admin/issue}">Issue</a></li>
+        <li><a th:href="@{/admin/return}">Return</a></li>
+    </ul>
+</aside>
+
+<main>
+    <div layout:fragment="content">
+        <!-- default content -->
+    </div>
+</main>
+<footer>
+    <p>&copy; 2025</p>
+</footer>
+</body>
+</html>
