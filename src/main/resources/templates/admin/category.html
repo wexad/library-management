@@ -21,7 +21,7 @@
             <a th:href="@{'/admin/category/edit/' + ${category.id}}" class="btn edit-btn">Edit</a>
             <form th:action="@{'/admin/category/' + ${category.id} + '/delete'}"
                   method="post" style="display:inline;"
-                  onsubmit="return confirmDelete();">
+                  onsubmit="return confirmDeleteCategory();">
                 <button type="submit" class="btn delete-btn">Delete</button>
             </form>
         </li>
@@ -36,7 +36,7 @@
             <a th:href="@{'/admin/category/edit/' + ${category.id}}" class="btn edit-btn">Edit</a>
             <form th:action="@{'/admin/category/' + ${category.id} + '/restore'}"
                   method="post" style="display:inline;"
-                  onsubmit="return confirmRestore();">
+                  onsubmit="return confirmRestoreCategory();">
                 <button type="submit" class="btn restore-btn">Restore</button>
             </form>
         </li>

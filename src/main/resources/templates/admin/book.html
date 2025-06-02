@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+
+<head>
+    <title layout:fragment="title">Books</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="book-section">
+    <h1>Active Books</h1>
+
+    <div class="book-section">
+        <ul th:if="${#lists.isEmpty(booksActive)}">
+            <li>No active books found.</li>
+        </ul>
+        <ul th:unless="${#lists.isEmpty(booksActive)}">
+            <li th:each="book : ${booksActive}">
+                <div class="book-info">
+                    <img th:src="@{${book.image.path}}" class="book-image" alt="Book Image"/>
+                    <div class="book-text">
+                        <h3 th:text="${book.title}"></h3>
+                        <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
+                        <p><strong>Copies:</strong> <span th:text="${book.totalCopies}"></span></p>
+                        <p><strong>Category:</strong> <span th:text="${book.category.name}"></span></p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a th:href="@{'/admin/book/edit/' + ${book.id}}">Edit</a>
+                    <form th:action="@{'/admin/book/' + ${book.id} + '/delete'}" method="post">
+                        <button type="submit" onclick="return confirmDeleteBook()">Delete</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+    <h1>Inactive Books</h1>
+
+    <div class="book-section">
+        <ul th:if="${#lists.isEmpty(booksInactive)}">
+            <li>No inactive books found.</li>
+        </ul>
+        <ul th:unless="${#lists.isEmpty(booksInactive)}">
+            <li th:each="book : ${booksInactive}">
+                <div class="book-info">
+                    <img th:src="@{${book.image.path}}" class="book-image" alt="Book Image"/>
+                    <div class="book-text">
+                        <h3 th:text="${book.title}"></h3>
+                        <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
+                        <p><strong>Category:</strong> <span th:text="${book.category.name}"></span></p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a th:href="@{'/admin/book/edit/' + ${book.id}}">Edit</a>
+                    <form th:action="@{'/admin/book/' + ${book.id} + '/restore'}" method="post">
+                        <button type="submit" class="restore-btn" onclick="return confirmRestoreBook()">Restore</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <a th:href="@{/admin/book/create}" class="create-btn">Create New Book</a>
+</div>
+</body>
+</html>

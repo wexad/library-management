@@ -24,17 +24,23 @@ public class CategoryService {
         this.imageRepository = imageRepository;
     }
 
+    public Image uploadFile(MultipartFile imageFile) throws IOException {
+        String uploadDir = "/home/wexad/upload-dir/images/category";
+        Files.createDirectories(Paths.get(uploadDir));
+        String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+        Path filePath = Paths.get(uploadDir).resolve(filename);
+        imageFile.transferTo(filePath.toFile());
+
+        Image newImage = Image.builder()
+                .path("/images/category/" + filename)
+                .build();
+        imageRepository.save(newImage);
+        return newImage;
+    }
+
     public void save(String name, MultipartFile file) {
         try {
-            String uploadDir = "/home/wexad/upload-dir/images/category";
-            Files.createDirectories(Paths.get(uploadDir));
-            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir).resolve(filename);
-            file.transferTo(filePath.toFile());
-            Image image = Image.builder()
-                    .path("/images/category/" + filename)
-                    .build();
-            imageRepository.save(image);
+            Image image = uploadFile(file);
             Category category = Category.builder()
                     .name(name)
                     .image(image)
@@ -56,21 +62,11 @@ public class CategoryService {
     public void updateCategory(Long id, Category updatedCategory, MultipartFile imageFile) {
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-
         existingCategory.setName(updatedCategory.getName());
-
+        Image newImage;
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
-                String uploadDir = "/home/wexad/upload-dir/images/category";
-                Files.createDirectories(Paths.get(uploadDir));
-                String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-                Path filePath = Paths.get(uploadDir).resolve(filename);
-                imageFile.transferTo(filePath.toFile());
-
-                Image newImage = Image.builder()
-                        .path("/images/category/" + filename)
-                        .build();
-                imageRepository.save(newImage);
+                newImage = uploadFile(imageFile);
 
                 existingCategory.setImage(newImage);
             } catch (IOException e) {

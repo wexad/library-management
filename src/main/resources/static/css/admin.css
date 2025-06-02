@@ -192,3 +192,234 @@ button {
 button:hover {
     background-color: #357abd;
 }
+
+.book-section h1 {
+    margin-top: 30px;
+    color: #2c3e50;
+    font-size: 22px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.book-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.book-section li {
+    background-color: #fefefe;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.book-section .book-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.book-section .book-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.book-section .book-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.book-section p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.book-section h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.book-section .actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.book-section a,
+.book-section button {
+    padding: 5px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.book-section a {
+    background-color: #3498db;
+}
+
+.book-section a:hover {
+    background-color: #2980b9;
+}
+
+.book-section button {
+    background-color: #e74c3c;
+}
+
+.book-section button:hover {
+    background-color: #c0392b;
+}
+
+.book-section .restore-btn {
+    background-color: #f39c12;
+}
+
+.book-section .restore-btn:hover {
+    background-color: #d68910;
+}
+
+.book-section .create-btn {
+    margin-top: 24px;
+    background-color: #2ecc71;
+    color: white;
+}
+
+.book-section .create-btn:hover {
+    background-color: #27ae60;
+}
+
+
+.create-book-form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.create-book-form h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #2c3e50;
+}
+
+.create-book-form input[type="text"],
+.create-book-form input[type="number"],
+.create-book-form input[type="file"],
+.create-book-form textarea,
+.create-book-form select {
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.create-book-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.create-book-form select {
+    background-color: #fff;
+}
+
+.create-book-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-book-form button:hover {
+    background-color: #2980b9;
+}
+
+.book-form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.book-form-container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #2c3e50;
+}
+
+.book-form-container input[type="text"],
+.book-form-container input[type="number"],
+.book-form-container input[type="file"],
+.book-form-container textarea,
+.book-form-container select {
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.book-form-container textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.book-form-container select {
+    background-color: #fff;
+}
+
+.book-form-container img {
+    display: block;
+    margin: 10px auto;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.book-form-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #27ae60;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-form-container button:hover {
+    background-color: #219150;
+}
