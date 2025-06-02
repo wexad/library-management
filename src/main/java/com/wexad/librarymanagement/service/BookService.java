@@ -1,8 +1,10 @@
 package com.wexad.librarymanagement.service;
 
+import com.wexad.librarymanagement.dto.BookDTO;
 import com.wexad.librarymanagement.entity.Book;
 import com.wexad.librarymanagement.entity.Category;
 import com.wexad.librarymanagement.entity.Image;
+import com.wexad.librarymanagement.mapper.BookMapper;
 import com.wexad.librarymanagement.repository.BookRepository;
 import com.wexad.librarymanagement.repository.CategoryRepository;
 import com.wexad.librarymanagement.repository.ImageRepository;
@@ -17,22 +19,24 @@ import java.util.List;
 
 @Service
 public class BookService {
+    private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
 
-    public BookService(BookRepository bookRepository, CategoryRepository categoryRepository, ImageRepository imageRepository) {
+    public BookService(BookMapper bookMapper, BookRepository bookRepository, CategoryRepository categoryRepository, ImageRepository imageRepository) {
+        this.bookMapper = bookMapper;
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
         this.imageRepository = imageRepository;
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<BookDTO> findAll() {
+        return bookMapper.toDtoList(bookRepository.findAll());
     }
 
-    public List<Book> findAllDeleted() {
-        return bookRepository.findAllDeleted();
+    public List<BookDTO> findAllDeleted() {
+        return bookMapper.toDtoList(bookRepository.findAllDeleted());
     }
 
     public Image uploadFile(MultipartFile imageFile) throws IOException {
@@ -67,8 +71,8 @@ public class BookService {
         }
     }
 
-    public Book findById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
+    public BookDTO findById(Long id) {
+        return bookMapper.toDto(bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found")));
     }
 
     public void update(Long id, String title, String author, String description, int totalCopies, Long categoryId, MultipartFile imageFile) {
@@ -99,4 +103,18 @@ public class BookService {
     public void restore(Long id) {
         bookRepository.restoreById(id);
     }
+
+    public List<BookDTO> searchBooks(String keyword, Integer categoryId) {
+        if (keyword != null && keyword.trim().isEmpty()) {
+            keyword = null;
+        }
+        if (categoryId != null && categoryId == 0) {
+            categoryId = null;
+        }
+        if ((keyword == null || keyword.isBlank()) && categoryId == null) {
+            return bookMapper.toDtoList(bookRepository.findAll());
+        }
+        return bookMapper.toDtoList(bookRepository.searchByKeywordAndCategory(keyword, categoryId));
+    }
 }
+

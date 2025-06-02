@@ -46,8 +46,7 @@ public class BookController {
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        Book book = bookService.findById(id);
-        model.addAttribute("book", book);
+        model.addAttribute("book", bookService.findById(id));
         model.addAttribute("categories", categoryService.findAll());
         return "admin/book-edit";
     }

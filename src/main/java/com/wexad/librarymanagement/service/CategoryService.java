@@ -1,7 +1,9 @@
 package com.wexad.librarymanagement.service;
 
+import com.wexad.librarymanagement.dto.CategoryDTO;
 import com.wexad.librarymanagement.entity.Category;
 import com.wexad.librarymanagement.entity.Image;
+import com.wexad.librarymanagement.mapper.CategoryMapper;
 import com.wexad.librarymanagement.repository.CategoryRepository;
 import com.wexad.librarymanagement.repository.ImageRepository;
 import org.springframework.stereotype.Service;
@@ -16,19 +18,22 @@ import java.util.List;
 @Service
 public class CategoryService {
 
+    private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
 
-    public CategoryService(CategoryRepository categoryRepository, ImageRepository imageRepository) {
+    public CategoryService(CategoryMapper categoryMapper, CategoryRepository categoryRepository, ImageRepository imageRepository) {
+        this.categoryMapper = categoryMapper;
         this.categoryRepository = categoryRepository;
         this.imageRepository = imageRepository;
     }
 
     public Image uploadFile(MultipartFile imageFile) throws IOException {
         String uploadDir = "/home/wexad/upload-dir/images/category";
-        Files.createDirectories(Paths.get(uploadDir));
+        Path dir = Paths.get(uploadDir);
+        Files.createDirectories(dir);
         String filename = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir).resolve(filename);
+        Path filePath = dir.resolve(filename);
         imageFile.transferTo(filePath.toFile());
 
         Image newImage = Image.builder()
@@ -51,12 +56,14 @@ public class CategoryService {
         }
     }
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDTO> findAll() {
+        // list of category dto
+        return categoryMapper.toDtoList(categoryRepository.findAll());
     }
 
-    public List<Category> findAllDeleted() {
-        return categoryRepository.findAllDeleted();
+    public List<CategoryDTO> findAllDeleted() {
+        return categoryMapper.toDtoList(categoryRepository.findAllDeleted());
+        // list of category dto
     }
 
     public void updateCategory(Long id, Category updatedCategory, MultipartFile imageFile) {
@@ -77,8 +84,9 @@ public class CategoryService {
         categoryRepository.save(existingCategory);
     }
 
-    public Category findById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+    public CategoryDTO findById(Long id) {
+        return categoryMapper.toDto(categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found")));
+        // category(id, name, image(path)) dto
     }
 
     public void delete(Long id) {

@@ -20,10 +20,8 @@ public class CategoryController {
 
     @GetMapping("")
     public String category(Model model) {
-        List<Category> categoriesActive = categoryService.findAll();
-        List<Category> categoriesInActive = categoryService.findAllDeleted();
-        model.addAttribute("categoriesInactive", categoriesInActive);
-        model.addAttribute("categoriesActive", categoriesActive);
+        model.addAttribute("categoriesInactive", categoryService.findAllDeleted());
+        model.addAttribute("categoriesActive", categoryService.findAll());
         return "admin/category";
     }
 
@@ -41,8 +39,7 @@ public class CategoryController {
 
     @GetMapping("/edit/{id}")
     public String editCategoryForm(@PathVariable Long id, Model model) {
-        Category category = categoryService.findById(id);
-        model.addAttribute("category", category);
+        model.addAttribute("category", categoryService.findById(id));
         return "admin/category-edit";
     }
 

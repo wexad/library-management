@@ -25,4 +25,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Transactional
     @Query(value = "UPDATE books SET active = true WHERE id = :id", nativeQuery = true)
     void restoreById(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM books b " +
+            "WHERE (:keyword IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(b.author) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "AND (:categoryId IS NULL OR b.category_id = :categoryId)", nativeQuery = true)
+    List<Book> searchByKeywordAndCategory(@Param("keyword") String keyword,
+                                          @Param("categoryId") Integer categoryId);
 }
