@@ -7,6 +7,13 @@
 </head>
 <body>
 <div class="main-page">
+
+    <div class="top-nav">
+        <a href="/profile">
+            <button type="button" class="profile-button">Profile</button>
+        </a>
+    </div>
+
     <h1>Library Catalog</h1>
 
     <form method="get" th:action="@{/books}" class="search-filter-form">
@@ -29,7 +36,6 @@
             <div class="book-info">
                 <h3 th:text="${book.title}"></h3>
                 <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
-<!--                <p><strong>Available:</strong> <span th:text="${book.totalCopies}"></span></p>-->
                 <p th:text="${#strings.abbreviate(book.description, 100)}"></p>
 
                 <button th:if="${book.totalCopies > 0}"
@@ -42,7 +48,7 @@
     </div>
 
     <div id="reserve-modal" style="display:none;">
-        <form th:action="@{/books/reserve}" method="post">
+        <form th:action="@{/reserve}" method="post">
             <input type="hidden" name="bookId" id="modal-book-id"/>
             <label>Pickup Date:</label>
             <input type="date" name="pickupDate" required><br/>
@@ -53,6 +59,7 @@
         </form>
     </div>
 </div>
+
 <script>
     function showReserveForm(button) {
         if (confirm("Are you sure you want to reserve this book?")) {

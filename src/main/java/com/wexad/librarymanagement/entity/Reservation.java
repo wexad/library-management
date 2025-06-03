@@ -4,9 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.*;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "reservations")
 public class Reservation extends BaseEntity {
@@ -18,8 +23,6 @@ public class Reservation extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
-
-    private LocalDateTime reservedAt;
 
     private String status; // reserved, borrowed, returned, canceled
 }

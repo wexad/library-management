@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -115,6 +116,12 @@ public class BookService {
             return bookMapper.toDtoList(bookRepository.findAll());
         }
         return bookMapper.toDtoList(bookRepository.searchByKeywordAndCategory(keyword, categoryId));
+    }
+
+    public void isAvailable(Integer bookId, LocalDate pickupDate, LocalDate returnDate) {
+        if (!bookRepository.isAvailable(bookId, pickupDate, returnDate)) {
+            throw new RuntimeException("Book is not available in this period");
+        }
     }
 }
 

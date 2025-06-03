@@ -18,7 +18,7 @@ public class LibraryManagementApplication {
 
     @Bean
     public AuditorAware<Long> auditorProvider() {
-        return () -> Optional.ofNullable(1L); // I have to replace with actual logic
+        return () -> Optional.of(1L); // I have to replace with actual logic
     }
 
 

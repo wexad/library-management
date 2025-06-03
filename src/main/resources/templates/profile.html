@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <form th:if="${user_data.role.equals('ADMIN')}" th:action="@{/admin/dashboard}" method="get">
+        <button type="submit">Go to Admin Dashboard</button>
+    </form>
+    <h1>Welcome, <span th:text="${user_data.name}"></span>!</h1>
+    <p><strong>Email:</strong> <span th:text="${user_data.email}"></span></p>
+</div>
+
+<div class="reservation-container">
+    <h2>Your Reservations</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Book Name</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res, iterStat : ${reservations}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${res.name}"></td>
+            <td th:text="${res.status}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(reservations)}">
+            <td colspan="3">No reservations found.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="back-to-books">
+    <a href="/books">
+        <button type="button">← Back to Book Catalog</button>
+    </a>
+</div>
+
+</body>
+</html>

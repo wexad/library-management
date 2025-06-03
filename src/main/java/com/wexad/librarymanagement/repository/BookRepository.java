@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -32,4 +33,35 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "AND (:categoryId IS NULL OR b.category_id = :categoryId)", nativeQuery = true)
     List<Book> searchByKeywordAndCategory(@Param("keyword") String keyword,
                                           @Param("categoryId") Integer categoryId);
+
+    @Query(value = """
+                SELECT 
+                    CASE 
+                        WHEN b.total_copies - (
+                            (
+                                SELECT COUNT(*) FROM loans l
+                                WHERE l.book_id = :book_id
+                                  AND l.issue_date <= :return_date
+                                  AND l.return_date >= :pickup_date
+                            )
+                            +
+                            (
+                                SELECT COUNT(*) FROM reservations r
+                                WHERE r.book_id = :book_id
+                                  AND r.status = 'reserved'
+                                  AND DATE(r.created_at) BETWEEN :pickup_date AND :return_date
+                            )
+                        ) > 0
+                    THEN TRUE
+                    ELSE FALSE
+                    END AS is_available
+                FROM books b
+                WHERE b.id = :book_id
+                LIMIT 1
+            """, nativeQuery = true)
+    Boolean isAvailable(@Param("book_id") Integer bookId,
+                        @Param("pickup_date") LocalDate pickupDate,
+                        @Param("return_date") LocalDate returnDate);
+
+
 }
