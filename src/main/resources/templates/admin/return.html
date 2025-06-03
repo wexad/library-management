@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+  <title>Return Books</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <section class="return-section">
+    <h2>Active Loans</h2>
+
+    <table class="return-table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Book Title</th>
+        <th>Username</th>
+        <th>Borrowed Date</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="loan, iterStat : ${loans}">
+        <td th:text="${iterStat.count}">1</td>
+        <td th:text="${loan.title}">Book Title</td>
+        <td th:text="${loan.username}">Username</td>
+        <td th:text="${loan.borrowedAt}">2025-06-01</td>
+        <td>
+          <form th:action="@{/admin/return/confirm}" method="post" style="display:inline;">
+            <input type="hidden" name="loanId" th:value="${loan.id}" />
+            <button type="submit" class="return-btn">Return</button>
+          </form>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(loans)}">
+        <td colspan="5">No active loans found.</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>

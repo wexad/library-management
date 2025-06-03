@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+
+<head>
+    <title>Issue Books</title>
+</head>
+
+<body>
+<main layout:fragment="content" class="issue-container">
+    <div class="container">
+        <h1>Reserved Books</h1>
+
+        <table class="issue-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Book</th>
+                <th>Reserved At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="res, iter : ${reservations}">
+                <td th:text="${iter.count}"></td>
+                <td th:text="${res.username}"></td>
+                <td th:text="${res.bookTitle}"></td>
+                <td th:text="${#temporals.format(res.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <form th:action="@{/admin/issue/confirm}" method="post" style="display:inline;"
+                          class="issue-button">
+                        <input type="hidden" name="reservationId" th:value="${res.id}"/>
+                        <button type="submit">Issue</button>
+                    </form>
+                    <form th:action="@{/admin/issue/cancel}" method="post" style="display:inline;"
+                          class="issue-button-cancel">
+                        <input type="hidden" name="reservationId" th:value="${res.id}"/>
+                        <button type="submit" class="cancel-btn">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(reservations)}">
+                <td colspan="5">No reserved books found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
