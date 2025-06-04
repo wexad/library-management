@@ -57,13 +57,11 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> findAll() {
-        // list of category dto
         return categoryMapper.toDtoList(categoryRepository.findAll());
     }
 
     public List<CategoryDTO> findAllDeleted() {
         return categoryMapper.toDtoList(categoryRepository.findAllDeleted());
-        // list of category dto
     }
 
     public void updateCategory(Long id, Category updatedCategory, MultipartFile imageFile) {
@@ -86,7 +84,6 @@ public class CategoryService {
 
     public CategoryDTO findById(Long id) {
         return categoryMapper.toDto(categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found")));
-        // category(id, name, image(path)) dto
     }
 
     public void delete(Long id) {

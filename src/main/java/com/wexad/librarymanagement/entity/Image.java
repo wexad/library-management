@@ -12,7 +12,5 @@ import lombok.*;
 @Entity
 @Table(name = "images")
 public class Image extends BaseEntity {
-
     private String path;
-
 }

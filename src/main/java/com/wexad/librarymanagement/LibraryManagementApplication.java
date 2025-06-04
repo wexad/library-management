@@ -1,5 +1,6 @@
 package com.wexad.librarymanagement;
 
+import com.wexad.librarymanagement.util.SessionUser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +18,8 @@ public class LibraryManagementApplication {
     }
 
     @Bean
-    public AuditorAware<Long> auditorProvider() {
-        return () -> Optional.of(1L); // I have to replace with actual logic
+    public AuditorAware<Long> auditorProvider(SessionUser sessionUser) {
+        return () -> Optional.of(Long.valueOf(sessionUser.getUserId()));
     }
 
 

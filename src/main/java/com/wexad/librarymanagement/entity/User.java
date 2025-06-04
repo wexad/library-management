@@ -1,9 +1,12 @@
 package com.wexad.librarymanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,9 +14,12 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @Entity
+@SoftDelete(columnName = "active", strategy = SoftDeleteType.ACTIVE)
 @Table(name = "users")
-public class User extends BaseEntity {
-
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
     @Column(unique = true)
@@ -22,5 +28,7 @@ public class User extends BaseEntity {
     private String password;
 
     private String role;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
 
