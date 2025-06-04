@@ -7,6 +7,8 @@ import com.wexad.librarymanagement.repository.UserRepository;
 import com.wexad.librarymanagement.util.SessionUser;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -21,5 +23,20 @@ public class UserService {
 
     public UserDTO getUser() {
         return userMapper.toDto(userRepository.getUsersById(sessionUser.getUserId()));
+    }
+
+    public List<UserDTO> getAll() {
+        return userMapper.toDtoList(userRepository.findAll());
+    }
+
+    public void createAdmin(String name, String email, String password, String role) {
+        userRepository.save(
+                User.builder()
+                        .name(name)
+                        .email(email)
+                        .password(password)
+                        .role(role)
+                        .build()
+        );
     }
 }

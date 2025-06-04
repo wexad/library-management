@@ -35,11 +35,11 @@ public class BookController {
 
     @PostMapping("/create")
     public String save(@RequestParam String title,
-                           @RequestParam String author,
-                           @RequestParam String description,
-                           @RequestParam int totalCopies,
-                           @RequestParam Long categoryId,
-                           @RequestParam MultipartFile imageFile) {
+                       @RequestParam String author,
+                       @RequestParam String description,
+                       @RequestParam int totalCopies,
+                       @RequestParam Long categoryId,
+                       @RequestParam MultipartFile imageFile) {
         bookService.save(title, author, description, totalCopies, categoryId, imageFile);
         return "redirect:/admin/book";
     }
@@ -53,12 +53,12 @@ public class BookController {
 
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id,
-                             @RequestParam String title,
-                             @RequestParam String author,
-                             @RequestParam String description,
-                             @RequestParam int totalCopies,
-                             @RequestParam Long categoryId,
-                             @RequestParam MultipartFile imageFile) {
+                         @RequestParam String title,
+                         @RequestParam String author,
+                         @RequestParam String description,
+                         @RequestParam int totalCopies,
+                         @RequestParam Long categoryId,
+                         @RequestParam MultipartFile imageFile) {
         bookService.update(id, title, author, description, totalCopies, categoryId, imageFile);
         return "redirect:/admin/book";
     }

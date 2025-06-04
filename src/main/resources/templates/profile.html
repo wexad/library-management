@@ -23,6 +23,7 @@
             <th>#</th>
             <th>Book Name</th>
             <th>Status</th>
+            <th>Due Date</th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +31,7 @@
             <td th:text="${iterStat.count}"></td>
             <td th:text="${res.name}"></td>
             <td th:text="${res.status}"></td>
+            <td th:text="${#temporals.format(res.dueDate, 'yyyy-MM-dd')}"></td>
         </tr>
         <tr th:if="${#lists.isEmpty(reservations)}">
             <td colspan="3">No reservations found.</td>
