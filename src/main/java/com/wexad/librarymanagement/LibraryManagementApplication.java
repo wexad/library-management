@@ -19,8 +19,6 @@ public class LibraryManagementApplication {
 
     @Bean
     public AuditorAware<Long> auditorProvider(SessionUser sessionUser) {
-        return () -> Optional.of(Long.valueOf(sessionUser.getUserId()));
+        return () -> Optional.ofNullable(sessionUser.getUserId());
     }
-
-
 }

@@ -19,7 +19,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
                   AND status IN ('reserved', 'borrowed', 'returned', 'canceled')
                 ORDER BY id DESC
             """, nativeQuery = true)
-    List<Reservation> findUserReservations(@Param("userId") Integer userId);
+    List<Reservation> findUserReservations(@Param("userId") Long userId);
 
     @Query(value = "FROM Reservation WHERE status = 'reserved'")
     List<Reservation> findAllReservedBooks();

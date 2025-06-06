@@ -10,6 +10,7 @@ import com.wexad.librarymanagement.repository.BookRepository;
 import com.wexad.librarymanagement.repository.ReservationRepository;
 import com.wexad.librarymanagement.repository.UserRepository;
 import com.wexad.librarymanagement.util.SessionUser;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -40,18 +41,18 @@ public class ReservationService {
 
     public void reserve(Integer bookId, LocalDate pickupDate, LocalDate returnDate) {
         bookService.isAvailable(bookId, pickupDate, returnDate);
-        int userId = sessionUser.getUserId();
-        Book book = bookRepository.findById(Long.valueOf(bookId)).orElseThrow(() -> new RuntimeException("Book not found"));
+        long userId = sessionUser.getUserId();
+        Book book = bookRepository.getReferenceById(Long.valueOf(bookId));
         Reservation reserved = Reservation.builder()
                 .book(book)
                 .status("reserved")
-                .user(userRepository.getById((long) userId))
+                .user(userRepository.getById(userId))
                 .build();
         reservationRepository.save(reserved);
     }
 
     public List<ReservationDTO> getUserReservations() {
-        int userId = sessionUser.getUserId();
+        long userId = sessionUser.getUserId();
         return reservationMapper.toDtoList(reservationRepository.findUserReservations(userId));
     }
 
@@ -59,13 +60,21 @@ public class ReservationService {
         return reservedBookMapper.toDtoList(reservationRepository.findAllReservedBooks());
     }
 
+    @Transactional
     public void issue(Integer reservationId) {
         Reservation reservation = reservationRepository.findById(Long.valueOf(reservationId))
                 .orElseThrow(() -> new IllegalArgumentException("Reservation not found"));
-        reservation.setStatus("borrowed");
+
+        if (reservation.getBook().getAvailableCopies() <= 0) {
+            throw new IllegalStateException("No available copies to issue");
+        }
+
+        reservation.setStatus("borrowed"); // reserved
         reservation.getBook().setAvailableCopies(reservation.getBook().getAvailableCopies() - 1);
+
         bookRepository.save(reservation.getBook());
         reservationRepository.save(reservation);
+
         loanService.save(reservationId);
     }
 

@@ -68,3 +68,21 @@ tr:nth-child(even) {
 .back-to-books button:hover {
     background-color: #1b5fad;
 }
+.logout-container,
+.logout-container form {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.logout-container button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-container button:hover {
+    background-color: #e60000;
+}

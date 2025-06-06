@@ -1,6 +1,7 @@
 package com.wexad.librarymanagement.controller.admin;
 
 import com.wexad.librarymanagement.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("/admin")
 public class UserManageController {

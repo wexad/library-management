@@ -28,16 +28,18 @@ public class LoanService {
     }
 
     public void save(Integer reservationId) {
-        Reservation reservation = reservationRepository.findById(Long.valueOf(reservationId)).orElseThrow();
+        Reservation reservation = reservationRepository.findById(Long.valueOf(reservationId))
+                .orElseThrow();
+
         loanRepository.save(
                 Loan.builder()
                         .user(reservation.getUser())
                         .book(reservation.getBook())
                         .issueDate(LocalDate.now())
                         .dueDate(LocalDate.now().plusDays(reservation.getDuration()))
-                        .dueDate(null).build());
+                        .build()
+        );
     }
-
     public List<LoanDTO> getActiveLoans() {
         return loanMapper.toDtoList(loanRepository.findAllBorrowedBooks());
     }

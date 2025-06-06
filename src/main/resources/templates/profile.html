@@ -11,6 +11,11 @@
     <form th:if="${user_data.role.equals('ADMIN')}" th:action="@{/admin/dashboard}" method="get">
         <button type="submit">Go to Admin Dashboard</button>
     </form>
+    <div class="logout-container">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
     <h1>Welcome, <span th:text="${user_data.name}"></span>!</h1>
     <p><strong>Email:</strong> <span th:text="${user_data.email}"></span></p>
 </div>

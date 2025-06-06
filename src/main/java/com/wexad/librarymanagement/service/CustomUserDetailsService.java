@@ -1,5 +1,6 @@
 package com.wexad.librarymanagement.service;
 
+import com.wexad.librarymanagement.config.CustomUserDetails;
 import com.wexad.librarymanagement.entity.User;
 import com.wexad.librarymanagement.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,16 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                getAuthorities(user)
-        );
-    }
-
-    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        return new CustomUserDetails(user);
     }
 }
 

@@ -1,13 +1,13 @@
 package com.wexad.librarymanagement.controller.admin;
 
-import com.wexad.librarymanagement.entity.Book;
 import com.wexad.librarymanagement.service.BookService;
 import com.wexad.librarymanagement.service.CategoryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("/admin/book")
 public class BookController {

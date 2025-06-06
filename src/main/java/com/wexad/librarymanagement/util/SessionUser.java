@@ -1,7 +1,6 @@
 package com.wexad.librarymanagement.util;
 
-import com.wexad.librarymanagement.service.UserService;
-import org.springframework.context.annotation.Lazy;
+import com.wexad.librarymanagement.config.CustomUserDetails;
 import org.springframework.stereotype.Component;
 
 import org.springframework.security.core.Authentication;
@@ -10,21 +9,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Component
 public class SessionUser {
 
-    private final UserService userService;
-
-    public SessionUser(@Lazy UserService userService) {
-        this.userService = userService;
+    public Long getUserId() {
+        return getUser().getId();
     }
 
-    public Integer getUserId() {
-        return userService.getUserIdWithEmail(getUsername());
-    }
-
-    public String getUsername() {
+    public CustomUserDetails getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
+            return customUserDetails;
         }
-        return authentication.getName();
+        return null;
     }
 }
