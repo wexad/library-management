@@ -55,6 +55,9 @@ public class BookService {
     }
 
     public void save(String title, String author, String description, int totalCopies, Long categoryId, MultipartFile file) {
+        if (totalCopies < 1) {
+            throw new RuntimeException("Total copies cannot be less than 1");
+        }
         try {
             Image image = uploadFile(file);
             Book book = Book.builder()
@@ -79,9 +82,13 @@ public class BookService {
     public void update(Long id, String title, String author, String description, int totalCopies, Long categoryId, MultipartFile imageFile) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
+        if (totalCopies < 1 || totalCopies < existingBook.getTotalCopies()) {
+            throw new RuntimeException("Total copies cannot be less than 1 or current value");
+        }
         existingBook.setTitle(title);
         existingBook.setAuthor(author);
         existingBook.setDescription(description);
+        existingBook.setAvailableCopies(totalCopies);
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
         existingBook.setCategory(category);
         Image newImage;
@@ -113,7 +120,7 @@ public class BookService {
             categoryId = null;
         }
         if ((keyword == null || keyword.isBlank()) && categoryId == null) {
-            return bookMapper.toDtoList(bookRepository.findAll());
+            return bookMapper.toDtoList(bookRepository.findAllActiveBooks());
         }
         return bookMapper.toDtoList(bookRepository.searchByKeywordAndCategory(keyword, categoryId));
     }

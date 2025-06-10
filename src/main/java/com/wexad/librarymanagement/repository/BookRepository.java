@@ -56,12 +56,18 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                     ELSE FALSE
                     END AS is_available
                 FROM books b
-                WHERE b.id = :book_id
+                INNER JOIN categories c ON b.category_id = c.id
+                WHERE b.id = :book_id and c.active = true
                 LIMIT 1
             """, nativeQuery = true)
     Boolean isAvailable(@Param("book_id") Integer bookId,
                         @Param("pickup_date") LocalDate pickupDate,
                         @Param("return_date") LocalDate returnDate);
 
-
+    @Query(value = """
+            SELECT b.* FROM books b
+            INNER JOIN categories c ON b.category_id = c.id
+            WHERE c.active = true and b.active = true
+            """, nativeQuery = true)
+    List<Book> findAllActiveBooks();
 }

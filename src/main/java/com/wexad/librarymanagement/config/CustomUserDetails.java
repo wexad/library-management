@@ -1,6 +1,7 @@
 package com.wexad.librarymanagement.config;
 
 import com.wexad.librarymanagement.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserDetails implements org.springframework.security.core.userdetails.UserDetails {
+    @Getter
     private Long id;
     private User user;
 
@@ -29,8 +31,5 @@ public class CustomUserDetails implements org.springframework.security.core.user
     @Override
     public String getUsername() {
         return user.getEmail();
-    }
-    public Long getId() {
-        return id;
     }
 }

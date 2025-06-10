@@ -18,7 +18,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public String handleAllExceptions(Exception ex, Model model) {
         logger.error("An unexpected error occurred: {}", ex.getMessage(), ex);
-        model.addAttribute("errorMessage", "An unexpected error occurred.");
+//        model.addAttribute("errorMessage", "An unexpected error occurred.");
+        model.addAttribute("errorMessage", ex.getMessage());
         return "error/general-error";
     }
 
